@@ -1,12 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useVoiceConversation } from "./useVoiceConversation";
 import { VoicePanel } from "./VoicePanel";
 import { VoiceFAB } from "./VoiceFAB";
 
 export default function VoiceWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const { isConnected, isSpeaking, start, stop } = useVoiceConversation();
 
@@ -17,6 +22,10 @@ export default function VoiceWidget() {
       console.error("Voice error:", err);
     }
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-8 right-8 z-50 flex flex-col items-end gap-4">

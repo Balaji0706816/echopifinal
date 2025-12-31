@@ -2,7 +2,7 @@
 
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Environment, Html } from '@react-three/drei'
-import { SnowAvatar } from '../components/SnowAvatar'
+import { SnowAvatar } from '../../components/SnowAvatar'
 import { Suspense } from 'react'
 
 function Loader() {

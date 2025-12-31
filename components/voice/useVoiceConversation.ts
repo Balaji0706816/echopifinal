@@ -13,6 +13,10 @@ export function useVoiceConversation() {
   const isSpeaking = conversation.isSpeaking;
 
   const start = async () => {
+    if (typeof window === 'undefined' || !navigator.mediaDevices) {
+      throw new Error("Media devices not available");
+    }
+    
     await navigator.mediaDevices.getUserMedia({ audio: true });
 
     await conversation.startSession({

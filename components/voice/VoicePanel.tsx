@@ -1,3 +1,5 @@
+'use client'
+
 interface VoicePanelProps {
     isConnected: boolean;
     isSpeaking: boolean;
