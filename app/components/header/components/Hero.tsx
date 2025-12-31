@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useCallback } from 'react';
 import { ArrowRight, Sparkles, UserCheck, Video, Loader2, Mic } from 'lucide-react';
 import { generateMarketingCopy } from '../services/geminiService';

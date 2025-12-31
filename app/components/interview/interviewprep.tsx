@@ -1,3 +1,4 @@
+'use client'
 
 import React, { useState, useCallback } from 'react';
 import { InterviewInfo, Tab, Message, InterviewFeedback } from './types';

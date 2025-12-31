@@ -1,8 +1,10 @@
+'use client'
+
 import React from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 
-const App: React.FC = () => {
+const Header: React.FC = () => {
   return (
     <div className="min-h-screen bg-white selection:bg-primary-100 selection:text-primary-900">
       <Navbar />
@@ -49,4 +51,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default Header;
