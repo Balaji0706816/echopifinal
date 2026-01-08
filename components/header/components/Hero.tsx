@@ -7,7 +7,7 @@ import { GeneratedContent, LoadingState } from '../types';
 import VideoCallAssistantOverlay from '../../VideoCallAssistantOverlay';
 import { SessionModal, ModalTab } from '../../interview/components/SessionModal'; // Import your new component
 import { InterviewInfo } from '../../interview/types';
-import { ExtendedInterviewInfo } from '@/components/interview/interviewprep';
+import { ExtendedInterviewInfo } from '../../interview/interviewprep';
 
 // Constants for UI consistency
 const BRANDS = [

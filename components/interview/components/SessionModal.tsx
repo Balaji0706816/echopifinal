@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react';
 import { InterviewForm } from './InterviewForm'; // Adjust path as needed
 import { FeedbackDashboard } from './FeedbackDashboard'; // Adjust path as needed

@@ -4,7 +4,6 @@ import "./globals.css";
 import { Suspense } from "react";
 import VoiceWidget from "../components/voice/VoiceWidget";
 import Footer from "../components/Footer";
-import Navbar from "../components/header/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,13 +29,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* We apply the variables to the body. 
-        Note: We are using standard CSS class names 'font-sans' and 'antialiased' 
-        which we will define in your globals.css since Tailwind config is absent.
-      */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <div className="app-container">
-          <Navbar />
           <Suspense fallback={null}>
             <VoiceWidget />
           </Suspense>
