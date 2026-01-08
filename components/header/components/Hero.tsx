@@ -1,153 +1,250 @@
-'use client'
+'use client';
 
 import React, { useState, useCallback } from 'react';
-import { ArrowRight, Sparkles, UserCheck, Video, Loader2, Mic } from 'lucide-react';
-import { generateMarketingCopy } from '../services/geminiService';
+import { ArrowRight, Video, Loader2, Mic } from 'lucide-react';
+import { generateMarketingCopy } from '../services/geminiService'; // Ensure generateFeedback is imported
 import { GeneratedContent, LoadingState } from '../types';
-import Interviewprep from "../../interview/interviewprep";
+import VideoCallAssistantOverlay from '../../VideoCallAssistantOverlay';
+import { SessionModal, ModalTab } from '../../interview/components/SessionModal'; // Import your new component
+import { InterviewInfo } from '../../interview/types';
+import { ExtendedInterviewInfo } from '@/components/interview/interviewprep';
+
+// Constants for UI consistency
+const BRANDS = [
+  { name: 'ElevenLabs', style: 'decoration-blue-500/30 underline underline-offset-4' },
+  { name: 'MediaPipe', style: '' },
+  { name: 'Google Gemini', style: '' },
+  { name: 'Three.js', style: '' },
+];
 
 const Hero: React.FC = () => {
-  const [topic, setTopic] = useState('');
+  // --- Hero Content State ---
+  const [topic, setTopic] = useState<string>('');
   const [loadingState, setLoadingState] = useState<LoadingState>(LoadingState.IDLE);
   const [content, setContent] = useState<GeneratedContent>({
-    headline: "Master Your Next Interview with AI Avatars",
-    subheadline: "Practice with lifelike 3D mentors. Our ElevenLabs-powered voice AI and MediaPipe tracking give you real-time feedback on your performance."
+    headline: "Master Interviews with AI.",
+    subheadline: "Practice with lifelike 3D mentors. Our ElevenLabs-powered voice AI and MediaPipe tracking provide real-time performance analytics."
   });
+
+  // --- Modal & Session State ---
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<ModalTab>("details");
+  const [isAnalysing, setIsAnalysing] = useState(false);
+
+  const [formData, setFormData] = useState<InterviewInfo>({
+    interviewType: 'behavioral',
+    companyName: "",
+    interviewDate: "",
+    role: "",
+  });
+
+  const isLoading = loadingState === LoadingState.LOADING;
+
+  // --- Handlers ---
+
+  // Handle form data changes from the Modal
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleFieldChange = (field: keyof InterviewInfo, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const isFormComplete = !!(
+    formData.interviewType &&
+    formData.companyName &&
+    formData.role &&
+    formData.interviewDate
+  );
+
+  const handleStartSimulation = () => {
+    // Logic to actually start the 3D scene or chat interface goes here
+    console.log("Starting simulation with:", formData);
+    setIsModalOpen(false);
+    // Trigger navigation or state change to show the actual interview interface
+  };
+
+  const resetAll = () => {
+    setActiveTab("details");
+    setIsAnalysing(false);
+    setIsModalOpen(false);
+  };
+
+  // --- Existing Hero Logic (Updated) ---
 
   const handleGenerate = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!topic.trim()) return;
 
+    // Optional: Keep the marketing copy generation, OR
+    // Use this input to "Quick Start" the modal
     setLoadingState(LoadingState.LOADING);
-    try {
-      const result = await generateMarketingCopy(topic);
-      setContent(result);
-      setLoadingState(LoadingState.SUCCESS);
-    } catch (err) {
-      setLoadingState(LoadingState.ERROR);
-    }
+    
+    // Simulate a quick loading effect then open modal with pre-filled data
+    setTimeout(() => {
+      setFormData(prev => ({ ...prev, role: topic }));
+      setLoadingState(LoadingState.IDLE);
+      setIsModalOpen(true); // Open the modal
+    }, 800);
+
   }, [topic]);
 
   return (
-    <div className="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden">
-      {/* Background Decor */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 pointer-events-none">
-        <div className="absolute top-20 left-1/4 w-72 h-72 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-        <div className="absolute top-20 right-1/4 w-72 h-72 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-32 left-1/2 w-96 h-96 bg-cyan-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+    <section className="relative min-h-screen flex items-center justify-center pt-20 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-white font-sans selection:bg-blue-100 selection:text-blue-900">
+      
+      {/* Ambient Blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-blue-50/50 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-slate-50 rounded-full blur-[120px]" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="text-center max-w-4xl mx-auto">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-medium mb-8 hover:bg-white hover:shadow-sm transition-all cursor-pointer">
-            <span className="flex h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>
-            Live: MediaPipe 3D Tracking Enabled
-            <ArrowRight size={14} className="text-blue-400" />
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="max-w-5xl mx-auto text-center">
+          
+         <div className="flex flex-col items-center">
+           {/* Status Badge */}
+           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-50 border border-black/20 shadow-sm mb-10 transition-all hover:border-black/20 cursor-default group">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black/20 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-black/20"></span>
+            </span>
+            <span className="text-xs font-semibold text-slate-600 tracking-tight uppercase">
+              v2.0: MediaPipe 3D Spatial Tracking
+            </span>
+            <ArrowRight size={14} className="ml-1 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
           </div>
 
-          {/* Headline */}
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 mb-6 leading-[1.1]">
-            {loadingState === LoadingState.LOADING ? (
-              <span className="animate-pulse bg-slate-200 text-transparent rounded-lg">Preparing Interview...</span>
-            ) : (
-              content.headline
-            )}
-          </h1>
-
-          {/* Subheadline */}
-          <p className="text-lg md:text-xl text-slate-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-            {loadingState === LoadingState.LOADING ? (
-               <span className="animate-pulse bg-slate-100 text-transparent block w-full h-16">Customizing your AI mentor...</span>
-            ) : (
-              content.subheadline
-            )}
-          </p>
-
-          {/* Interactive Generator */}
-          <div className="max-w-md mx-auto mb-10">
-             <form onSubmit={handleGenerate} className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-200"></div>
-                <div className="relative flex items-center bg-white rounded-full p-1.5 shadow-xl ring-1 ring-slate-900/5">
-                   <div className="pl-4 text-slate-400">
-                      <Mic size={18} />
-                   </div>
-                   <input
-                      type="text"
-                      value={topic}
-                      onChange={(e) => setTopic(e.target.value)}
-                      placeholder="Enter a job role (e.g. 'Senior React Dev')"
-                      className="flex-1 border-0 bg-transparent py-2 px-3 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6 outline-none"
-                   />
-                   <button
-                      type="submit"
-                      disabled={loadingState === LoadingState.LOADING || !topic}
-                      className="flex-none rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-all disabled:opacity-50 flex items-center gap-2"
-                   >
-                      {loadingState === LoadingState.LOADING ? <Loader2 className="animate-spin" size={16} /> : 'Build Interview'}
-                   </button>
-                </div>
-             </form>
+          {/* Headline Section */}
+          <div className="min-h-[160px] md:min-h-[200px]" aria-live="polite">
+            <h1 className="text-3xl md:text-5xl tracking-tighter text-slate-900 mb-6 transition-all duration-500 leading-[1.1]">
+              <span className="bg-clip-text text-transparent bg-gradient-to-br from-slate-900 via-slate-800 to-black-900">
+                {content.headline}
+              </span>
+            </h1>
+            
+            <p className="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed mb-10 tracking-tight font-medium">
+              {content.subheadline}
+            </p>
           </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-            <Interviewprep />
-            <button className="w-full sm:w-auto px-8 py-4 bg-white text-slate-700 border border-slate-200 hover:border-slate-300 hover:bg-slate-50 rounded-xl font-semibold text-lg transition-all flex items-center justify-center gap-2">
-              <Video size={20} className="text-blue-500" />
-              Try Avatar Mode
+          {/* Action Row */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+            
+            {/* Main CTA - Opens Modal */}
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="
+                group relative inline-flex items-center justify-center px-8 py-3 
+                font-semibold text-white transition-all duration-300 
+                bg-[#1A1C20] hover:bg-black 
+                rounded-2xl 
+                shadow-[0_10px_20px_-5px_rgba(0,0,0,0.15)] 
+                hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.25)]
+                hover:-translate-y-0.5
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900
+                border border-white/10 
+                cursor-pointer
+              "
+            >
+              <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/10 pointer-events-none"></div>
+              <span className="flex items-center gap-3 text-lg tracking-tight">
+                Start Preparation Session
+                <svg 
+                  className="w-5 h-5 text-gray-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-white" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </span>
+            </button>
+
+            {/* Secondary CTA */}
+            <button 
+              className="
+                group relative px-8 py-3 
+                bg-white hover:bg-gray-50 
+                border border-gray-200 hover:border-gray-300
+                rounded-2xl 
+                font-semibold text-gray-900 
+                shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.08)]
+                transition-all duration-300 
+                flex items-center gap-3 
+                active:scale-[0.98] cursor-pointer
+              "
+            >
+              <div className="flex items-center justify-center w-5 h-5 transition-transform duration-300 group-hover:scale-110">
+                <Video size={20} className="text-gray-900" strokeWidth={2.5} />
+              </div>
+              <span className="tracking-tight">Initialize Interviewer Mode</span>
             </button>
           </div>
+         </div>
 
-          {/* Social Proof */}
-          <div className="border-t border-slate-100 pt-10">
-            <p className="text-sm font-medium text-slate-500 mb-6 uppercase tracking-wider">Powered by cutting-edge AI</p>
-            <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 opacity-60">
-               <span className="font-bold text-slate-400 text-xl italic tracking-tighter text-slate-800 underline decoration-blue-500">ElevenLabs</span>
-               <span className="font-bold text-slate-400 text-xl text-slate-800">MediaPipe</span>
-               <span className="font-bold text-slate-400 text-xl text-slate-800">Google Gemini</span>
-               <span className="font-bold text-slate-400 text-xl text-slate-800">Three.js</span>
+          <VideoCallAssistantOverlay />
+
+          {/* Quick Start Input */}
+          <div className="max-w-xl mx-auto mb-16 mt-10">
+            <form onSubmit={handleGenerate} className="relative group">
+              <div className="absolute -inset-2 bg-gradient-to-r from-blue-600/10 to-indigo-600/10 rounded-[2rem] blur-xl opacity-0 group-focus-within:opacity-100 transition duration-700"></div>
+              <div className="relative flex items-center bg-white border border-slate-200 rounded-2xl p-2 shadow-xl shadow-slate-200/40">
+                <Mic className="ml-4 text-slate-400" size={20} />
+                <input
+                  type="text"
+                  value={topic}
+                  onChange={(e) => setTopic(e.target.value)}
+                  placeholder="E.g. Senior Software Engineer at Google..."
+                  className="flex-1 px-4 py-3 bg-transparent text-slate-900 placeholder:text-slate-400 focus:outline-none font-medium tracking-tight"
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading || !topic}
+                  className="bg-slate-900 text-white px-6 py-3 rounded-xl font-bold transition-all hover:bg-blue-600 disabled:bg-slate-100 disabled:text-slate-400 flex items-center gap-2 active:scale-95"
+                >
+                  {isLoading ? <Loader2 className="animate-spin" size={18} /> : 'Quick Start'}
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Tech Stack Social Proof */}
+          <div className="pt-12 border-t border-slate-100">
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-slate-400 mb-8">
+              Engineered with Industry Standards
+            </p>
+            <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6 grayscale opacity-60 hover:opacity-100 transition-opacity duration-500">
+              {BRANDS.map((brand) => (
+                <span 
+                  key={brand.name} 
+                  className={`text-sm md:text-base font-bold font-mono text-slate-700 tracking-tighter ${brand.style}`}
+                >
+                  {brand.name}
+                </span>
+              ))}
             </div>
           </div>
         </div>
-
-        {/* Floating UI Elements (Avatar Context) */}
-        <div className="absolute top-1/2 left-0 -translate-y-1/2 hidden xl:block -translate-x-12">
-            <div className="bg-white p-4 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-100 max-w-xs animate-float">
-                <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">92%</div>
-                    <div>
-                        <div className="text-sm font-bold text-slate-800">Confidence Score</div>
-                        <div className="text-xs text-slate-500">Based on facial tracking</div>
-                    </div>
-                </div>
-                <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-blue-500 w-[92%]"></div>
-                </div>
-            </div>
-        </div>
-
-        <div className="absolute top-1/3 right-0 hidden xl:block translate-x-12">
-             <div className="bg-white p-4 rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-slate-100 max-w-xs animate-float-delayed">
-                <div className="text-sm font-bold text-slate-800 mb-2">Live Analysis</div>
-                <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <UserCheck size={14} className="text-green-500" />
-                        <span>Good Eye Contact</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <UserCheck size={14} className="text-green-500" />
-                        <span>Clear Articulation</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <UserCheck size={14} className="text-blue-500" />
-                        <span>Natural Gesture</span>
-                    </div>
-                </div>
-            </div>
-        </div>
       </div>
-    </div>
+
+      {/* --- REUSED SESSION MODAL --- */}
+      <SessionModal 
+        isOpen={isModalOpen}
+        onClose={resetAll}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        formData={formData}
+        onInputChange={handleInputChange}
+        onFieldChange={(field: keyof ExtendedInterviewInfo, value: string) => handleFieldChange(field as keyof InterviewInfo, value)}
+        isFormComplete={isFormComplete}
+        onStartSimulation={handleStartSimulation}
+          feedback={null}
+        isAnalysing={isAnalysing}
+      />
+
+    </section>
   );
 };
 

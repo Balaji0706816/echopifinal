@@ -23,7 +23,7 @@ export const InterviewForm: React.FC<Props> = ({ formData, onChange, onStart, is
             placeholder="e.g. Senior Frontend Engineer"
             value={formData.role}
             onChange={onChange}
-            className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none"
+            className="w-full text-black px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none"
           />
         </div>
 
@@ -37,7 +37,7 @@ export const InterviewForm: React.FC<Props> = ({ formData, onChange, onStart, is
             placeholder="e.g. Google, Stripe, etc."
             value={formData.companyName}
             onChange={onChange}
-            className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none"
+            className="w-full text-black  px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none"
           />
         </div>
 
@@ -49,13 +49,13 @@ export const InterviewForm: React.FC<Props> = ({ formData, onChange, onStart, is
             name="interviewType"
             value={formData.interviewType}
             onChange={onChange}
-            className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none appearance-none"
+            className="w-full  text-black text-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none appearance-none"
           >
-            <option value="">Select Category</option>
-            <option value="behavioral">Behavioral (Soft Skills)</option>
-            <option value="technical">Technical (Coding & Logic)</option>
-            <option value="system-design">System Design</option>
-            <option value="hr">HR & Culture Fit</option>
+            <option value="" className="text-black">Select Category</option>
+            <option value="behavioral" className="text-black">Behavioral (Soft Skills)</option>
+            <option value="technical" className="text-black">Technical (Coding & Logic)</option>
+            <option value="system-design" className="text-black"> System Design</option>
+            <option value="hr" className="text-black">HR & Culture Fit</option>
           </select>
         </div>
 
@@ -68,7 +68,7 @@ export const InterviewForm: React.FC<Props> = ({ formData, onChange, onStart, is
             name="interviewDate"
             value={formData.interviewDate}
             onChange={onChange}
-            className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none"
+            className="w-full text-black  px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none"
           />
         </div>
       </div>
@@ -77,9 +77,9 @@ export const InterviewForm: React.FC<Props> = ({ formData, onChange, onStart, is
         <button
           disabled={!isComplete}
           onClick={onStart}
-          className={`w-full py-4 rounded-xl font-bold text-white shadow-lg transition-all transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2
+          className={`w-1/3 mx-auto py-2 cursor-pointer rounded-xl font-bold text-white shadow-lg transition-all transform hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2
             ${isComplete 
-              ? "bg-gradient-to-r from-indigo-600 to-violet-600 hover:shadow-indigo-200" 
+              ? "bg-black hover:shadow-indigo-200" 
               : "bg-slate-300 cursor-not-allowed opacity-50"}
           `}
         >

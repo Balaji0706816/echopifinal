@@ -9,6 +9,8 @@ type InterviewInfo = {
   role: string;
 };
 
+
+
 type Tab = "details" | "mock";
 
 export default function InterviewWidget() {

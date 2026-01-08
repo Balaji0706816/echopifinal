@@ -1,14 +1,14 @@
 import React from 'react';
-import { InterviewForm } from './components/InterviewForm'; // Adjust path as needed
-import { FeedbackDashboard } from './components/FeedbackDashboard'; // Adjust path as needed
+import { InterviewForm } from './InterviewForm'; // Adjust path as needed
+import { FeedbackDashboard } from './FeedbackDashboard'; // Adjust path as needed
 // Import your types. If they are in a central file, import from there.
-import { InterviewInfo, InterviewFeedback } from './types'; 
+// For this example, I am assuming these types match what is in your App.tsx
+import { InterviewInfo, InterviewFeedback } from '../types'; 
+import Link from 'next/link';
 
-// --- Types ---
 export type ModalTab = 'details' | 'job-context' | 'feedback';
 
-// Ensure jobDescription is recognized even if not in the base InterviewInfo type
-export interface ExtendedInterviewInfo extends InterviewInfo {
+interface ExtendedInterviewInfo extends InterviewInfo {
   jobDescription?: string;
 }
 
@@ -80,7 +80,7 @@ export const SessionModal: React.FC<SessionModalProps> = ({
         </div>
 
         {/* Navigation Steps */}
-        {/* <div className="flex-none px-8  border-b border-gray-100">
+        <div className="flex-none px-8 py-4 bg-white border-b border-gray-100">
           <div className="flex gap-8">
             <NavButton 
               active={activeTab === 'details'} 
@@ -95,15 +95,15 @@ export const SessionModal: React.FC<SessionModalProps> = ({
               disabled={!isFormComplete}
               onClick={() => isFormComplete && setActiveTab('job-context')}
             />
-            <NavButton 
+            {/* <NavButton 
               active={activeTab === 'feedback'} 
               label="3. Analysis" 
               step={3} 
               disabled={!feedback && !isAnalysing}
               onClick={() => (feedback || isAnalysing) && setActiveTab('feedback')}
-            />
+            /> */}
           </div>
-        </div> */}
+        </div>
 
         {/* Tab Content Area */}
         <div className="flex-1 overflow-y-auto p-8 scroll-smooth custom-scrollbar bg-gray-50/50">
@@ -115,8 +115,7 @@ export const SessionModal: React.FC<SessionModalProps> = ({
                 <InterviewForm 
                   formData={formData} 
                   onChange={onInputChange} 
-                  // Reuse onStart to go to Next Step
-                  onStart={() => setActiveTab('job-context')} 
+                  onStart={() => setActiveTab('job-context')} // Proceed to next step
                   isComplete={isFormComplete}
                 />
               </div>
@@ -146,7 +145,7 @@ export const SessionModal: React.FC<SessionModalProps> = ({
                   <div className="flex-grow relative group ml-1">
                     <textarea
                       name="jobDescription"
-                      className="w-full h-full resize-none p-4 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-black/20 focus:border-black transition-all text-sm text-gray-700 leading-relaxed placeholder:text-gray-400 font-mono"
+                      className="w-full h-full resize-none p-4 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-1 focus:ring-black/20 focus:border-black transition-all text-sm text-gray-700 leading-relaxed placeholder:text-gray-400 font-mono"
                       placeholder="Paste job description here (e.g. 'Senior React Developer needed...')"
                       value={formData.jobDescription || ''}
                       onChange={(e) => onFieldChange('jobDescription', e.target.value)}
@@ -161,17 +160,16 @@ export const SessionModal: React.FC<SessionModalProps> = ({
                       >
                         Back
                       </button>
-                      <button
-                        onClick={onStartSimulation}
-                        disabled={!formData.jobDescription}
+                      <Link
+                        href={`/simulation`}
                         className="
-                          px-8 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl 
+                          px-8 py-2.5 bg-black hover:bg-black-600 text-white text-sm font-semibold rounded-xl 
                           shadow-[0_4px_14px_0_rgba(79,70,229,0.3)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.23)] 
                           transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none
                         "
                       >
-                        Generate Simulation 
-                      </button>
+                        Generate Simulation
+                      </Link>
                   </div>
                 </div>
 

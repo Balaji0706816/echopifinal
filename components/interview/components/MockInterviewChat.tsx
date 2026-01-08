@@ -104,7 +104,7 @@ export const MockInterviewChat: React.FC<Props> = ({ info, onFinish }) => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Type your response..."
-          className="flex-1 px-4 py-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+          className="flex-1 text-black  px-4 py-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
           disabled={isLoading}
         />
         <button

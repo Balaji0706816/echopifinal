@@ -10,12 +10,7 @@ const Header: React.FC = () => {
       <Navbar />
       <main>
         <Hero />
-        {/* Placeholder for content below fold to allow scrolling */}
-        <section className="bg-slate-50 py-24 border-t border-slate-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-             <p className="text-slate-400 font-medium">More features below...</p>
-          </div>
-        </section>
+       
       </main>
       
       {/* Add custom keyframe animations via style tag since we aren't using an external CSS file */}
