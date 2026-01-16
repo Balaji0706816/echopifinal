@@ -2,12 +2,12 @@
 
 import React, { useState, useCallback } from 'react';
 import { ArrowRight, Video, Loader2, Mic } from 'lucide-react';
-import { generateMarketingCopy } from '../services/geminiService'; // Ensure generateFeedback is imported
 import { GeneratedContent, LoadingState } from '../types';
 import VideoCallAssistantOverlay from '../../VideoCallAssistantOverlay';
 import { SessionModal, ModalTab } from '../../interview/components/SessionModal'; // Import your new component
 import { InterviewInfo } from '../../interview/types';
 import { ExtendedInterviewInfo } from '../../interview/interviewprep';
+
 
 // Constants for UI consistency
 const BRANDS = [

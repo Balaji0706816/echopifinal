@@ -3,7 +3,7 @@ import { MessageCircle, HelpCircle } from "lucide-react";
 
 export default function VideoCallAssistantOverlay() {
   return (
-    <div  className="w-full bg-gray-100  ">
+    <div  className="w-full bg-gray-100 py-20 ">
 
 <div  className=" flex justify-end items-center w-full  px-6 max-w-6xl mx-auto  bg-red-200 rounded-t-2xl    p-1 ">
                 
@@ -20,7 +20,7 @@ export default function VideoCallAssistantOverlay() {
       <div className="relative w-full max-w-4xl rounded-2xl overflow-hidden bg-black   ">
       
       <div className="flex items-center justify-between px-6 py-1 bg-gray-900 text-sm text-neutral-300">
-          <div className="flex py-1 gap-4">
+          <div className="flex gap-4">
           {/* Mac-style window buttons */}
           <div className="flex items-center gap-2">
             <button
@@ -37,7 +37,7 @@ export default function VideoCallAssistantOverlay() {
             ></button>
           </div>
           </div>
-         
+          <button className="px-3 py-1 rounded-md bg-red-600 text-white">End</button>
         </div>
 
         {/* Fake video grid */}
