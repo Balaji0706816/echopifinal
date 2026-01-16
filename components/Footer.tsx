@@ -47,7 +47,7 @@ const Footer = () => {
                 Ready to upgrade your workflow?
               </h2>
               <p className="text-xl text-gray-500 mb-8 max-w-md leading-relaxed">
-                Join 10,000+ teams using Cluely to automate their meeting notes today.
+                Join 10,000+ teams using Echopi to automate their meeting notes today.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
